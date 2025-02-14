@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+eBay Stock Tracker
 
-## Getting Started
+Description
+The eBay Stock Tracker is a web scraping tool that utilizes OpenAI's AI capabilities to analyze HTML content from supplier websites and extract relevant data points such as stock status and quantity. The extracted data is then used to update an eBay store in real-time, ensuring that listings are accurate and competitive.
 
-First, run the development server:
+Installation Instructions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Clone the Repository:
+   git clone https://github.com/yourusername/ebay-stock-tracker.git
+   cd ebay-stock-tracker
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install Dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Make sure you have Node.js installed, then run:
+   npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set Up Environment Variables:
 
-## Learn More
+Create a .env file in the root directory and add your OpenAI API key:
+   OPENAI_API_KEY=your_openai_api_key
 
-To learn more about Next.js, take a look at the following resources:
+Run the Application:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Start the application using:
+   npm start
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Usage
 
-## Deploy on Vercel
+To use the eBay Stock Tracker, send a POST request to the /api/scraper endpoint with the following JSON body:
+{
+  "url": "https://supplier-website.com",
+  "targets": [
+    { "type": "stock", "description": "Stock status of the item" },
+    { "type": "quantity", "description": "Quantity available" }
+  ]
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Example
+curl -X POST http://localhost:3000/api/scraper -H "Content-Type: application/json" -d '{"url": "https://supplier-website.com", "targets": [{"type": "stock", "description": "Stock status of the item"}, {"type": "quantity", "description": "Quantity available"}]}'
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contributing
+
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (git checkout -b feature/YourFeature).
+3. Make your changes and commit them (git commit -m 'Add some feature').
+4. Push to the branch (git push origin feature/YourFeature).
+5. Open a pull request.
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+Error Handling
+
+If you encounter errors during scraping, such as:
+Error in AI analysis: Unexpected token '`', "```json
+{
+"... is not valid JSON
+
+This indicates that the AI response is not being parsed correctly. Ensure that the AI response is formatted as valid JSON without any extraneous characters.

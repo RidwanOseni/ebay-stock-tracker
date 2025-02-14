@@ -37,13 +37,18 @@ export class ScraperService {
       console.log("Selectors:", analysis.selectors);
 
       // Extract data using the AI-provided selectors
-      const result = await page.evaluate((selectors: SelectorMap) => {
+      const rawData = await page.evaluate((selectors: SelectorMap) => {
         const data: ScrapedData = {};
         
         for (const [key, selector] of Object.entries(selectors)) {
           const element = document.querySelector(selector);
           if (element) {
             data[key] = {
+              id: key,
+              title: null,
+              price: null,
+              stock: null,
+              description: null,
               text: element.textContent?.trim() || null,
               rawHtml: element.innerHTML
             };
@@ -53,7 +58,7 @@ export class ScraperService {
         return data;
       }, analysis.selectors);
 
-      return result;
+      return this.normalizeData(rawData);
       
     } catch (error) {
       console.error("Error during scraping:", error);
@@ -67,5 +72,16 @@ export class ScraperService {
         }
       }
     }
+  }
+
+  private normalizeData(rawData: any): ScrapedData {
+    // Transform rawData into a consistent format
+    return {
+      id: rawData.id || 'default-id', // Provide a default or handle missing id
+      title: rawData.title || 'No Title', // Provide a default title
+      price: rawData.price || 0, // Default price if not available
+      stock: rawData.stock || 0, // Default stock if not available
+      description: rawData.description || 'No Description', // Default description
+    };
   }
 } 
